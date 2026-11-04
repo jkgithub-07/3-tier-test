@@ -1,1 +1,15 @@
-
+version: 0.0
+os: linux
+file_exists_behavior: OVERWRITE
+files:
+  - source: index.php
+    destination: /var/www/html
+hooks:
+  BeforeInstall:
+    - location: before_script.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: after_script.sh
+      timeout: 300
+      runas: root
