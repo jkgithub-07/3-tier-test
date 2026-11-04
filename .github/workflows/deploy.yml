@@ -1,1 +1,47 @@
+name: Deploy
 
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write 
+  contents: read
+
+env:
+  AWS_REGION: "us-east-1"
+  S3_BUCKET: "code-deploy-artifact-bucket-212"    
+  AppName: "3-tier-app"
+  CodeDeployConfig: "CodeDeployDefault.AllAtOnce"
+  DeployGroupName: "3-tier-deployment-grp"
+ 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Create zip artifact
+        run: zip -r app-${{ github.sha }}.zip appspec.yml index.php before_script.sh after_script.sh
+
+      - name: Upload file to S3
+        run: aws s3 cp app-${{ github.sha }}.zip s3://${{ env.S3_BUCKET }}/app-${{ github.sha }}.zip
+
+      - name: Create CodeDeploy
+        id: deploy
+        run: |
+          aws deploy create-deployment \
+            --application-name ${{env.AppName}} \
+            --deployment-config-name ${{env.CodeDeployConfig}} \
+            --deployment-group-name ${{env.DeployGroupName}} \
+            --s3-location bucket=${{ env.S3_BUCKET }},key=deploy-${{ github.sha }}.zip,bundleType=zip \
+            --region ${{env.AWS_REGION}}
+          
