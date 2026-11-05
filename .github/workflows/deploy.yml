@@ -30,7 +30,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Create zip artifact
-        run: zip -r app-${{ github.sha }}.zip appspec.yml index.php before_script.sh after_script.sh
+        run: zip -r app-${{ github.sha }}.zip appspec.yml index.php before_script.sh after_script.sh validate_script.sh
 
       - name: Upload file to S3
         run: aws s3 cp app-${{ github.sha }}.zip s3://${{ env.S3_BUCKET }}/app-${{ github.sha }}.zip

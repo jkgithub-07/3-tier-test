@@ -13,3 +13,7 @@ hooks:
     - location: after_script.sh
       timeout: 300
       runas: root
+  ValidateService:
+    - location: validate_script.sh
+      timeout: 60
+      runas: root
