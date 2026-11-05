@@ -38,7 +38,7 @@
 </head>
 
 <body>
-<h2>Database User Records</h2>
+<h2>Database User Records for 3 tier</h2>
 <?php
 
     // Connect to RDS
