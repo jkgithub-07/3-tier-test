@@ -68,5 +68,6 @@
     \$conn->close();
 ?>
 <!-- test -->
+    <!-- test returns -->
 </body>
 </html>
