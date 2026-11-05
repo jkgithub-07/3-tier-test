@@ -13,7 +13,7 @@ env:
   S3_BUCKET: "code-deploy-artifact-bucket-212"    
   AppName: "3-tier-app"
   CodeDeployConfig: "CodeDeployDefault.AllAtOnce"
-  DeployGroupName: "3-tier-deployment-grp"
+  DeployGroupName: "deployment-2"
  
 
 jobs:
