@@ -42,30 +42,30 @@
 <?php
 
     // Connect to RDS
-    \$conn = new mysqli( "database-1.c5sc46wkkcnc.us-east-1.rds.amazonaws.com", "admin", "Database#12345", "db", 3306 );
+    $conn = new mysqli( "database-1.c5sc46wkkcnc.us-east-1.rds.amazonaws.com", "admin", "Database#12345", "db", 3306 );
 
     // Fetch records
-    \$sql = "SELECT * FROM userdata";
+    $sql = "SELECT * FROM userdata";
 
-    \$result = \$conn->query(\$sql);
-    if (\$result->num_rows > 0) {
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
         echo "<table>";
         echo "<tr>
                 <th>Name</th>
                 <th>Age</th>
               </tr>";
 
-        while (\$row = \$result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) {
             echo "<tr>";
-            echo "<td>" . htmlspecialchars(\$row["name"]) . "</td>";
-            echo "<td>" . htmlspecialchars(\$row["age"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["name"]) . "</td>";
+            echo "<td>" . htmlspecialchars($row["age"]) . "</td>";
             echo "</tr>";
         }
         echo "</table>";
     } else {
         echo "<p>No data found in userdata table.</p>";
     }
-    \$conn->close();
+    $conn->close();
 ?>
 <!-- test -->
     <!-- test returns -->
