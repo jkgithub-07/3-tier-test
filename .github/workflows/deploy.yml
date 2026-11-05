@@ -38,10 +38,11 @@ jobs:
       - name: Create CodeDeploy -1
         id: deploy
         run: |
-          aws deploy create-deployment \
-            --application-name ${{env.AppName}} \
-            --deployment-config-name ${{env.CodeDeployConfig}} \
-            --deployment-group-name ${{env.DeployGroupName}} \
-            --s3-location bucket=${{ env.S3_BUCKET }},key=deploy-${{ github.sha }}.zip,bundleType=zip \
-            --region ${{env.AWS_REGION}}
           
+           aws deploy create-deployment \
+            --application-name "${{ env.AppName }}" \
+            --deployment-config-name "${{ env.CodeDeployConfig }}" \
+            --deployment-group-name "${{ env.DeployGroupName }}" \
+            --s3-location bucket=${{ env.S3_BUCKET }},key=app-${{ github.sha }}.zip,bundleType=zip \
+            --region "${{ env.AWS_REGION }}"
+                
