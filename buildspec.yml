@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "packaging app"
+
+artifact:
+  files:
+    - appspec.yml
+    - index.php
+    - before_script.sh
+    - after_script.sh
+    - validate_script.sh
