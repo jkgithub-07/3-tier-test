@@ -5,7 +5,7 @@ phases:
     commands:
       - echo "packaging app"
 
-artifact:
+artifacts:
   files:
     - appspec.yml
     - index.php
