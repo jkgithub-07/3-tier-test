@@ -38,7 +38,7 @@
 </head>
 
 <body>
-<h2>Database User Records for 3 tier appplication (testing)</h2>
+<h2>Database User Records for 3 tier appplication (testing) for pipeline</h2>
 <?php
 
     // Connect to RDS
