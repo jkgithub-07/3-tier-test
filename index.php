@@ -42,9 +42,52 @@
 <h2>hello wolrd</h2>
 <?php
 
-    // Connect to RDS
-    $conn = new mysqli( "database-1.c5sc46wkkcnc.us-east-1.rds.amazonaws.com", "admin", "Database#12345", "db", 3306 );
 
+    require __DIR__ . '/vendor/autoload.php';
+
+    use Aws\SecretsManager\SecretsManagerClient;
+    use Aws\Exception\AwsException;
+
+    $region = 'us-east-1';
+
+    $secretName = 'rds/credential';
+
+    $dbHost = 'database-1.c5sc46wkkcnc.us-east-1.rds.amazonaws.com';
+    $dbName = 'db';
+    $dbPort = 3306;
+
+    // Step 1: Create Secrets Manager client
+    $client = new SecretsManagerClient([
+        'version' => 'latest',
+        'region'  => $region
+    ]);
+
+    // Step 2: Retrieve the secret
+    $secretResponse = $client->getSecretValue([
+        'SecretId' => $secretName
+    ]);
+
+    // Step 3: Decode the JSON secret
+    $credentials = json_decode(
+        $secretResponse['SecretString'],
+        true
+    );
+
+    // Step 4: Extract username and password
+    $dbUsername = $credentials['username'];
+    $dbPassword = $credentials['password'];
+
+    // Connect to RDS
+    $conn = new mysqli( $dbHost,
+        $dbUsername,
+        $dbPassword,
+        $dbName,
+        $dbPort );
+
+
+    if ($conn->connect_error) {
+        throw new Exception('Database connection failed');
+    }
     // Fetch records
     $sql = "SELECT * FROM userdata";
 
