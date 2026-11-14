@@ -1,9 +1,27 @@
+
 version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      php: 8.3
     commands:
-      - echo "packaging app"
+      - echo "Installing Composer"
+      - curl -sS https://getcomposer.org/installer -o composer-setup.php
+      - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+      - rm composer-setup.php
+
+  pre_build:
+    commands:
+      - echo "Installing AWS SDK dependencies"
+      - composer update --no-dev --prefer-dist --no-interaction
+      - composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
+
+  build:
+    commands:
+      - echo "Verifying dependencies"
+      - test -f vendor/autoload.php
+      - echo "Build completed successfully"
 
 artifacts:
   files:
@@ -12,3 +30,5 @@ artifacts:
     - before_script.sh
     - after_script.sh
     - validate_script.sh
+    - vendor/**/*
+  discard-paths: no
