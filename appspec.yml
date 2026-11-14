@@ -4,6 +4,9 @@ file_exists_behavior: OVERWRITE
 files:
   - source: index.php
     destination: /var/www/html
+
+  - source: vendor
+    destination: /var/www/html/vendor
 hooks:
   BeforeInstall:
     - location: before_script.sh
