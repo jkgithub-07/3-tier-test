@@ -41,6 +41,7 @@
 <h2>Database User Records for 3 tier appplication (testing) for pipeline -1</h2>
 <h2>hello wolrd</h2>
 <h2>testing test</h2>
+<h2>DATE OF TODAY</h2>
 <?php
 
 
