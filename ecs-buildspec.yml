@@ -52,4 +52,4 @@ artifacts:
     - imageDetail.json
     - ecs-deployment/taskdef.json
     - ecs-deployment/appspec.yaml
-  discard-paths: yes
+  discard-paths: no
