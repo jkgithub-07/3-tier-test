@@ -62,21 +62,21 @@ phases:
       - aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin 577638397823.dkr.ecr.us-east-1.amazonaws.com
 
   build:
-  commands:
-    - echo "Building and pushing Docker image"
-    - |
-      set -e
+    commands:
+      - echo "Building and pushing Docker image"
+      - |
+        set -e
 
-      COMMIT_ID="${CODEBUILD_RESOLVED_SOURCE_VERSION:0:12}"
-      BUILD_ID="${CODEBUILD_BUILD_NUMBER}"
-      IMAGE_TAG="${COMMIT_ID}-${BUILD_ID}"
+        COMMIT_ID="${CODEBUILD_RESOLVED_SOURCE_VERSION:0:12}"
+        BUILD_ID="${CODEBUILD_BUILD_NUMBER}"
+        IMAGE_TAG="${COMMIT_ID}-${BUILD_ID}"
 
-      echo "Image tag: ${IMAGE_TAG}"
+        echo "Image tag: ${IMAGE_TAG}"
 
-      docker build -t "${REPOSITORY_URI}:${IMAGE_TAG}" .
-      docker push "${REPOSITORY_URI}:${IMAGE_TAG}"
+        docker build -t "${REPOSITORY_URI}:${IMAGE_TAG}" .
+        docker push "${REPOSITORY_URI}:${IMAGE_TAG}"
 
-      echo "Docker image successfully pushed to ECR"
+        echo "Docker image successfully pushed to ECR"
 
 artifacts:
   files:
