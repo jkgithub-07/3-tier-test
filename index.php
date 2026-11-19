@@ -39,12 +39,8 @@
 
 <body>
 <h2>Database User Records for 3 tier appplication (testing) for pipeline -1</h2>
-<h2>hello wolrd</h2>
-<h2>fght</h2>
-<h2>testing test</h2>
-<h2>DATE OF TODAY</h2>
-<h2>hello again monday test-2.......test543221</h2>
-<h2>hello wednesday gtrgtyg</h2>
+<h2>hello world</h2>
+
 <?php
 
 
@@ -61,28 +57,26 @@
     $dbName = 'db';
     $dbPort = 3306;
 
-    // Step 1: Create Secrets Manager client
+    
     $client = new SecretsManagerClient([
         'version' => 'latest',
         'region'  => $region
     ]);
 
-    // Step 2: Retrieve the secret
     $secretResponse = $client->getSecretValue([
         'SecretId' => $secretName
     ]);
 
-    // Step 3: Decode the JSON secret
+   
     $credentials = json_decode(
         $secretResponse['SecretString'],
         true
     );
 
-    // Step 4: Extract username and password
     $dbUsername = $credentials['username'];
     $dbPassword = $credentials['password'];
 
-    // Connect to RDS
+    
     $conn = new mysqli( $dbHost,
         $dbUsername,
         $dbPassword,
@@ -93,7 +87,7 @@
     if ($conn->connect_error) {
         throw new Exception('Database connection failed');
     }
-    // Fetch records
+   
     $sql = "SELECT * FROM userdata";
 
     $result = $conn->query($sql);

@@ -1,47 +1,5 @@
 
-# version: 0.2
-
-# phases:
-#   install:
-#     runtime-versions:
-#       php: 8.3
-#     commands:
-#       - echo "Installing Composer"
-#       - curl -sS https://getcomposer.org/installer -o composer-setup.php
-#       - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-#       - rm composer-setup.php
-
-#   pre_build:
-#     commands:
-#       - echo "Installing AWS SDK dependencies"
-#       - composer update --no-dev --prefer-dist --no-interaction
-#       - composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
-
-#   build:
-#     commands:
-#       - echo "Verifying dependencies"
-#       - test -f vendor/autoload.php
-#       - echo "Build completed successfully"
-
-# artifacts:
-#   files:
-#     - appspec.yml
-#     - index.php
-#     - before_script.sh
-#     - after_script.sh
-#     - validate_script.sh
-#     - vendor/**/*
-#   discard-paths: no
-
-
-# new
 version: 0.2
-
-env:
-  variables:
-    AWS_DEFAULT_REGION: us-east-1
-    ECR_REPOSITORY: 3-tier-app/repo
-    REPOSITORY_URI: 577638397823.dkr.ecr.us-east-1.amazonaws.com/3-tier-app/repo
 
 phases:
   install:
@@ -55,28 +13,15 @@ phases:
 
   pre_build:
     commands:
-      - echo "Installing PHP dependencies"
+      - echo "Installing AWS SDK dependencies"
+      - composer update --no-dev --prefer-dist --no-interaction
       - composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
-      - test -f vendor/autoload.php
-      - echo "Logging in to Amazon ECR"
-      - aws ecr get-login-password --region "$AWS_DEFAULT_REGION" | docker login --username AWS --password-stdin 577638397823.dkr.ecr.us-east-1.amazonaws.com
 
   build:
     commands:
-      - echo "Building and pushing Docker image"
-      - |
-        set -e
-
-        COMMIT_ID="${CODEBUILD_RESOLVED_SOURCE_VERSION:0:12}"
-        BUILD_ID="${CODEBUILD_BUILD_NUMBER}"
-        IMAGE_TAG="${COMMIT_ID}-${BUILD_ID}"
-
-        echo "Image tag: ${IMAGE_TAG}"
-
-        docker build -t "${REPOSITORY_URI}:${IMAGE_TAG}" .
-        docker push "${REPOSITORY_URI}:${IMAGE_TAG}"
-
-        echo "Docker image successfully pushed to ECR"
+      - echo "Verifying dependencies"
+      - test -f vendor/autoload.php
+      - echo "Build completed successfully"
 
 artifacts:
   files:
@@ -84,5 +29,8 @@ artifacts:
     - index.php
     - before_script.sh
     - after_script.sh
+    - validate_script.sh
     - vendor/**/*
   discard-paths: no
+
+
